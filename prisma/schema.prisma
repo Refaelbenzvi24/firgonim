@@ -1,0 +1,32 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgres"
+  url      = env("DATABASE_URL")
+}
+
+model Profile {
+  id          String     @id @default(cuid())
+  name        String
+  title       String
+  description String
+  feedbacks   Feedback[]
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+}
+
+model Feedback {
+  id             String   @id @default(cuid())
+  title          String
+  description    String
+  feedbackerName String
+  profile        Profile  @relation(fields: [profileId], references: [id])
+  profileId      String
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
