@@ -33,7 +33,7 @@ export interface ButtonProps {
 	colorsForStates?: ColorsForState
 }
 
-const Button = styled(motion.button)(({
+const Button = styled.button(({
 	                                      colorsForStates,
 	                                      color,
 	                                      elevation,

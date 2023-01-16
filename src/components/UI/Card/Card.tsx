@@ -5,7 +5,7 @@ import {HTMLMotionProps, motion} from "framer-motion"
 import theme from "../Utils/theme"
 
 
-export interface CardProps extends HTMLMotionProps<"div"> {
+export interface CardProps {
 	height?: string
 	minHeight?: string
 	maxHeight?: string
@@ -18,13 +18,14 @@ export interface CardProps extends HTMLMotionProps<"div"> {
 }
 
 
-const Card = styled(motion.div)(({elevation, noShadow, bgColor, minHeight, maxHeight, height, minWidth, maxWidth, width}: CardProps) => [
+const Card = styled.div(({elevation, noShadow, bgColor, minHeight, maxHeight, height, minWidth, maxWidth, width}: CardProps) => [
 	!noShadow && css`
     box-shadow: ${theme.shadows[elevation || 3]};
 	`,
 	
 	css`
     right: 0;
+		border-radius: 5px;
     background-color: ${bgColor || theme.colors.white};
     height: ${height};
     width: ${width};
@@ -42,8 +43,6 @@ const Card = styled(motion.div)(({elevation, noShadow, bgColor, minHeight, maxHe
 	maxWidth && css`
     max-width: ${maxWidth};
 	`,
-	
-	({className}) => className,
 ])
 
 Card.defaultProps = {

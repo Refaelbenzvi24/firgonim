@@ -1,29 +1,18 @@
 import {type NextPage} from "next";
 import Head from "next/head";
-import Link from "next/link";
-import IconPhUser from '~icons/ph/user.jsx'
-
 import {api} from "../utils/api";
-import {Button, Card, theme, Typography} from "../components/UI";
+import IconPhUser from '~icons/ph/user.jsx'
+import {Card, theme, Typography} from "../components/UI";
+import {inferProcedureOutput} from "@trpc/server";
+import {AppRouter} from "../server/api/root";
+import {useRouter} from "next/router";
 
 const Home: NextPage = () => {
-	const hello = api.example.hello.useQuery({text: "from tRPC"});
+	const router = useRouter()
+	const {data: profiles} = api.profile.getAll.useQuery();
 	
-	const feedbacks = [
-		{
-			title: 'JavaScript',
-			description: 'נועם עזר לי מאוד!! הוא מומחה בכול מה שקשור בפונקציות! ויש לו הבנה מעמיקה בבניית קוד נכון.',
-			user: 'אורן אבו'
-		},
-		{
-			title: 'React',
-			description: 'נועם ישב איתי במשך שעתיים. הוא מתמצא מאוד בהוקים וראוטינג בריאקט.',
-			user: 'אורן אבו'
-		}
-	]
-	
-	const handleAddFeedback = () => {
-	
+	const goToProfile = async (profile: inferProcedureOutput<AppRouter["profile"]["getAll"]>[number]) => {
+		await router.push(`/${profile.id}`)
 	}
 	
 	return (
@@ -34,94 +23,49 @@ const Home: NextPage = () => {
 				<link rel="icon" href="/public/favicon.ico"/>
 			</Head>
 			<main dir="rtl" className="flex min-h-screen flex-col bg-[#f5f6fa]">
-				<div className="flex h-full pt-10">
-					<div className="flex flex-row px-10 mx-auto w-[1140px]">
-						
-						<div className="px-4">
+				<div className="flex items-center justify-between fixed h-20 w-full bg-gray-200 px-4">
+					<Typography variant={'h2'} color={theme.colors.dark_300}>
+						פרגונים
+					</Typography>
+				</div>
+				
+				<div className="flex h-full pt-32">
+					<div dir="ltr" className="flex flex-row flex-wrap gap-4 px-10 mx-auto w-[1140px]">
+						{profiles && profiles.map((profile, index) => (
 							<Card
-								className="flex p-4 flex-col items-center"
-								height="430px"
-								width="250px"
+								onClick={() => goToProfile(profile)}
+								key={index}
+								className="flex flex-row p-4 items-center cursor-pointer"
+								height="160px"
+								width="100%"
 								noShadow>
-								<div className="flex flex-col items-center">
-									<div className="flex items-center justify-center mb-4 rounded-full bg-gray-200 h-20 w-20 text-3xl text-gray-500">
-										<IconPhUser/>
-									</div>
-									
-									<Typography variant={'h3'}>
-										Noam Anisfeld
-									</Typography>
-									
-									<Typography
-										className="mt-2"
-										weight={400}
-										variant={'small'}
-										color={theme.colors.gray_600}>
-										Full Stack Developer
-									</Typography>
+								<div className="flex items-center justify-center rounded-full bg-gray-200 h-20 w-20 text-3xl text-gray-500">
+									<IconPhUser/>
 								</div>
 								
-								<div className="flex flex-col items-center mt-10">
-									<Typography
-										variant={'h3'}
-										color={theme.colors.blue_500}>
-										About
+								<div className="flex flex-col pl-4">
+									<Typography variant={'subtitle'}>
+										{profile.name}
 									</Typography>
 									
 									<Typography
-										className="mt-4"
-										centered
+										className="mt-1"
 										weight={400}
-										variant={'small'}>
-										Software and web programmer, expertising in frontend web technologies. Fast learner and always aim at thorough
-										understanding. Code is my favorite music.
+										variant={'body'}
+										color={theme.colors.gray_600}>
+										{profile.title}
+									</Typography>
+									
+									<Typography
+										className="mt-1.5"
+										weight={400}
+										variant={'body'}
+										color={theme.colors.blue_500}>
+										{profile._count.feedbacks} Review
 									</Typography>
 								</div>
 							</Card>
-						</div>
-						
-						<div className="flex flex-col px-4 space-y-4 w-full">
-							{feedbacks.map(feedback => (
-								<Card
-									className="p-4"
-									width="100%"
-									height="fit-content"
-									key={feedback.title}
-									noShadow>
-									<div className="flex flex-col space-y-2 w-[50%]">
-										<Typography variant={'body'} color={theme.colors.blue_500}>
-											{feedback.title}
-										</Typography>
-										
-										<Typography
-											weight={400}
-											variant={'body'}>
-											{feedback.description}
-										</Typography>
-									</div>
-									
-									<div className="flex justify-end">
-										<Typography
-											weight={400}
-											color={theme.colors.gray_500}
-											variant={'body'}>
-											{feedback.user}
-										</Typography>
-									</div>
-								</Card>
-							))}
-							
-							<div className="flex">
-								<Button onClick={handleAddFeedback} noShadow>
-									<Typography
-										weight={400}
-										color={theme.colors.gray_500}
-										variant={'body'}>
-										הוספת פירגון
-									</Typography>
-								</Button>
-							</div>
-						</div>
+						))}
 					</div>
 				</div>
 			</main>

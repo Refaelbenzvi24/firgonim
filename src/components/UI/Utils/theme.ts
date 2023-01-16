@@ -92,6 +92,7 @@ const theme = {
 	},
 
 	shadows: {
+		0: '0 3px 10px rgba(0, 0, 0, 0.04)',
 		1: '0 3px 10px rgba(0, 0, 0, 0.08)',
 		2: '0 2px 8px rgba(0, 0, 0, 0.1)',
 		3: '0 2px 4px rgba(0, 0, 0, 0.15)',
