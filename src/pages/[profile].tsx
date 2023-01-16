@@ -138,7 +138,7 @@ const Home: NextPage = () => {
 								
 								<form
 									className="flex flex-col w-full"
-									onSubmit={() => handleSubmit(onSubmit)}>
+									onSubmit={handleSubmit(onSubmit)}>
 									<TextField
 										noShadow
 										label="נושא"
