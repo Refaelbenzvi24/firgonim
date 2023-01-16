@@ -16,6 +16,7 @@ const Home: NextPage = () => {
 	const createProfile = api.profile.create.useMutation();
 	
 	const {handleSubmit, reset, formState: {errors}, register} = useForm<ProfileValidationSchema>({
+		
 		resolver: zodResolver(profileValidation)
 	})
 	
@@ -23,6 +24,8 @@ const Home: NextPage = () => {
 		createProfile.mutate(data)
 		reset()
 	}
+	
+	
 	
 	return (
 		<>
@@ -47,7 +50,7 @@ const Home: NextPage = () => {
 						</Typography>
 						<form
 							className="flex flex-col w-[600px] pt-10"
-							onSubmit={() => handleSubmit(onSubmit)}>
+							onSubmit={handleSubmit(onSubmit)}>
 							<TextField
 								label="אימייל"
 								error={!!errors.email}

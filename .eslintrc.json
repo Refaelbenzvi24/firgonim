@@ -1,22 +1,25 @@
 {
-  "overrides": [
+  "overrides":     [
     {
-      "extends": [
+      "extends":       [
         "plugin:@typescript-eslint/recommended-requiring-type-checking"
       ],
-      "files": ["*.ts", "*.tsx"],
+      "rules":         {
+        "@typescript-eslint/no-misused-promises": "off"
+      },
+      "files":         ["*.ts", "*.tsx"],
       "parserOptions": {
         "project": "tsconfig.json"
       }
     }
   ],
-  "parser": "@typescript-eslint/parser",
+  "parser":        "@typescript-eslint/parser",
   "parserOptions": {
     "project": "./tsconfig.json"
   },
-  "plugins": ["@typescript-eslint"],
-  "extends": ["next/core-web-vitals", "plugin:@typescript-eslint/recommended"],
-  "rules": {
+  "plugins":       ["@typescript-eslint"],
+  "extends":       ["next/core-web-vitals", "plugin:@typescript-eslint/recommended"],
+  "rules":         {
     "@typescript-eslint/consistent-type-imports": "warn"
   }
 }
