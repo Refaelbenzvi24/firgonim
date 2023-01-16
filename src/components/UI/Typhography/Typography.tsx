@@ -1,7 +1,8 @@
-import {CSSProperties, DetailedHTMLProps, ElementType, HTMLAttributes} from "react"
+import type {CSSProperties, DetailedHTMLProps, ElementType, HTMLAttributes} from "react"
 
 import {css} from "@emotion/react"
-import styled, {StyledTags} from "@emotion/styled"
+import styled from "@emotion/styled"
+import type {StyledTags} from "@emotion/styled"
 
 import theme from '../Utils/theme'
 
@@ -16,7 +17,7 @@ interface SettingsItem {
 	htmlTag: keyof StyledTags
 	fontFamily: CSSProperties['fontFamily']
 	weight: CSSProperties['fontWeight']
-	size: CSSProperties['fontSize']
+	size: number | string
 	spacing: CSSProperties['letterSpacing']
 	lineHeight: CSSProperties['lineHeight']
 	uppercase: boolean

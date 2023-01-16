@@ -3,16 +3,16 @@ import Head from "next/head";
 import {api} from "../utils/api";
 import IconPhUser from '~icons/ph/user.jsx'
 import {Card, theme, Typography} from "../components/UI";
-import {inferProcedureOutput} from "@trpc/server";
-import {AppRouter} from "../server/api/root";
+import {type inferProcedureOutput} from "@trpc/server";
+import {type AppRouter} from "../server/api/root";
 import {useRouter} from "next/router";
 
 const Home: NextPage = () => {
 	const router = useRouter()
 	const {data: profiles} = api.profile.getAll.useQuery();
 	
-	const goToProfile = async (profile: inferProcedureOutput<AppRouter["profile"]["getAll"]>[number]) => {
-		await router.push(`/${profile.id}`)
+	const goToProfile = (profile: inferProcedureOutput<AppRouter["profile"]["getAll"]>[number]) => {
+		void router.push(`/${profile.id}`)
 	}
 	
 	return (

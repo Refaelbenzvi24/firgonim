@@ -2,11 +2,9 @@ import {motion} from "framer-motion";
 import styled from "@emotion/styled";
 import {css} from "@emotion/react";
 
-interface SectionProps {
 
-}
 
-const Section = styled(motion.section)((props: SectionProps) => [
+const Section = styled(motion.section)(() => [
 	css`
     width: 100%;
 	`

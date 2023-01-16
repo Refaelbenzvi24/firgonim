@@ -1,6 +1,5 @@
 import {css} from "@emotion/react"
 import styled from "@emotion/styled"
-import {HTMLMotionProps, motion} from "framer-motion"
 
 import theme from "../Utils/theme"
 

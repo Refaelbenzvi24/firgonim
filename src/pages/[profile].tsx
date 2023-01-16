@@ -5,7 +5,7 @@ import IconPhUser from '~icons/ph/user.jsx'
 import {api} from "../utils/api";
 import {Button, Card, TextField, theme, Typography} from "../components/UI";
 import {useRouter} from "next/router";
-import {SubmitHandler, useForm} from "react-hook-form";
+import {type SubmitHandler, useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {z} from "zod";
 import {feedbackBaseObject} from "../shared/validations/feedback";
@@ -31,9 +31,9 @@ const Home: NextPage = () => {
 			...data,
 			profile: profileId
 		}, {
-			onSuccess: async () => {
-				reset()
-				await utils.profile.getById.invalidate()
+			onSuccess: () => {
+				reset();
+				void utils.profile.getById.invalidate()
 			}
 		})
 	}
@@ -138,7 +138,7 @@ const Home: NextPage = () => {
 								
 								<form
 									className="flex flex-col w-full"
-									onSubmit={handleSubmit(onSubmit)}>
+									onSubmit={() => handleSubmit(onSubmit)}>
 									<TextField
 										noShadow
 										label="נושא"

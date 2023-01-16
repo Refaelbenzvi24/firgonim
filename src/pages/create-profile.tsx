@@ -2,7 +2,7 @@ import {type NextPage} from "next";
 import Head from "next/head";
 import {api} from "../utils/api";
 import {z} from "zod";
-import {SubmitHandler, useForm} from "react-hook-form";
+import {type SubmitHandler, useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {Button, TextField, TextArea, Typography, theme} from "../components/UI";
 import {profileObject} from "../shared/validations/profile";
@@ -47,7 +47,7 @@ const Home: NextPage = () => {
 						</Typography>
 						<form
 							className="flex flex-col w-[600px] pt-10"
-							onSubmit={handleSubmit(onSubmit)}>
+							onSubmit={() => handleSubmit(onSubmit)}>
 							<TextField
 								label="אימייל"
 								error={!!errors.email}

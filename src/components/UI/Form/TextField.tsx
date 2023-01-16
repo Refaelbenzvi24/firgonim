@@ -1,11 +1,13 @@
-import {FormEvent, forwardRef, RefObject, useEffect, useImperativeHandle, useRef, useState} from "react"
+import {forwardRef, useEffect, useRef, useState} from "react"
+import type {FormEvent} from "react"
 
 import {css as classCss} from "@emotion/css"
 import {css} from "@emotion/react"
 import styled from "@emotion/styled"
 import autoAnimate from '@formkit/auto-animate'
 import clsx from "clsx"
-import {HTMLMotionProps, motion} from "framer-motion"
+import {motion} from "framer-motion"
+import type {HTMLMotionProps} from "framer-motion"
 
 import theme from "../Utils/theme"
 import ConditionalLabel from "./ConditionalLabel"
@@ -126,6 +128,8 @@ const TextField = forwardRef<HTMLInputElement, TextFieldProps>((props, ref) => {
 		</Section>
 	)
 })
+
+TextField.displayName = "TextField"
 
 TextField.defaultProps = {
 	placeholder: undefined,
