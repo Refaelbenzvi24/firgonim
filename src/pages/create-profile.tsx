@@ -16,7 +16,6 @@ const Home: NextPage = () => {
 	const createProfile = api.profile.create.useMutation();
 	
 	const {handleSubmit, reset, formState: {errors}, register} = useForm<ProfileValidationSchema>({
-		
 		resolver: zodResolver(profileValidation)
 	})
 	
@@ -24,7 +23,6 @@ const Home: NextPage = () => {
 		createProfile.mutate(data)
 		reset()
 	}
-	
 	
 	
 	return (
@@ -36,7 +34,7 @@ const Home: NextPage = () => {
 			</Head>
 			<main dir="rtl" className="flex h-full flex-col bg-[#f5f6fa]">
 				<div className="flex items-center justify-between fixed h-20 w-full bg-gray-200 px-4">
-					<Link href={'/'}>
+					<Link className="cursor-pointer" href={'/'}>
 						<Typography variant={'h2'} color={theme.colors.dark_300}>
 							פרגונים
 						</Typography>
