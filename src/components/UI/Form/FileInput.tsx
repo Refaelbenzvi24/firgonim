@@ -1,5 +1,4 @@
-import {forwardRef, useEffect, useRef, useState} from "react"
-import type React from "react"
+import {forwardRef, InputHTMLAttributes, useEffect, useRef, useState} from "react"
 import type {FormEvent} from "react"
 
 import {css as classCss} from "@emotion/css"
@@ -16,7 +15,7 @@ import Section from "./Section";
 import {HTMLTagProps} from "../types";
 
 
-export const TextFieldInput = styled('input', transientOptions)((
+export const FileInputInput = styled('input', transientOptions)((
 	{
 		$centered,
 		$noShadow
@@ -63,7 +62,7 @@ export const TextFieldInput = styled('input', transientOptions)((
 ])
 
 
-interface TextFieldProps extends HTMLTagProps<HTMLInputElement> {
+interface FileInputProps extends HTMLTagProps<HTMLInputElement, InputHTMLAttributes<HTMLInputElement>> {
 	centered?: boolean
 	noShadow?: boolean
 	placeholder?: string
@@ -75,7 +74,7 @@ interface TextFieldProps extends HTMLTagProps<HTMLInputElement> {
 }
 
 
-const TextField = forwardRef<HTMLInputElement, TextFieldProps>((props, ref) => {
+const FileInput = forwardRef<HTMLInputElement, FileInputProps>((props, ref) => {
 	const {
 		label,
 		className,
@@ -84,6 +83,8 @@ const TextField = forwardRef<HTMLInputElement, TextFieldProps>((props, ref) => {
 		placeholder,
 		centered,
 		onInput,
+		onChange,
+		value,
 		error,
 		helperText,
 		...restProps
@@ -106,29 +107,31 @@ const TextField = forwardRef<HTMLInputElement, TextFieldProps>((props, ref) => {
 		<Section ref={sectionRef}>
 			<ConditionalLabel {...{label, persistentLabel, value: localValue}}/>
 			
-			<TextFieldInput
+			<FileInputInput
 				{...restProps}
 				ref={ref}
 				className={`
-					${classCss`
-						${(localValue && label) || (label && persistentLabel) ? classCss`margin-top: 0;` : classCss`margin-top: 24px;`}
-						${helperText ? classCss`margin-bottom: 0;` : classCss`margin-bottom: 24px;`}
-					`}
-					${clsx(className)}`
+				${classCss`
+					${(localValue && label) || (label && persistentLabel) ? classCss`margin-top: 0;` : classCss`margin-top: 24px;`}
+					${helperText ? classCss`margin-bottom: 0;` : classCss`margin-bottom: 24px;`}
+				`}
+				${clsx(className)}`
 				}
 				onInput={inputHandler}
 				placeholder={placeholder || (!persistentLabel ? label : '')}
 				$noShadow={noShadow}
-				$centered={centered}/>
+				$centered={centered}
+				type="file"
+				{...{onChange, value}}/>
 			
 			{helperText ? <HelperText $error={error}>{helperText}</HelperText> : null}
 		</Section>
 	)
 })
 
-TextField.displayName = "TextField"
+FileInput.displayName = "FileInput"
 
-TextField.defaultProps = {
+FileInput.defaultProps = {
 	placeholder: undefined,
 	centered: false,
 	persistentLabel: false,
@@ -138,4 +141,4 @@ TextField.defaultProps = {
 	label: undefined,
 }
 
-export default TextField
+export default FileInput

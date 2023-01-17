@@ -1,8 +1,7 @@
 import {type NextPage} from "next";
 import Head from "next/head";
 import {api} from "../utils/api";
-import IconPhUser from '~icons/ph/user.jsx'
-import {Card, theme, Typography} from "../components/UI";
+import {Avatar, Card, theme, Typography} from "../components/UI";
 import {type inferProcedureOutput} from "@trpc/server";
 import {type AppRouter} from "../server/api/root";
 import {useRouter} from "next/router";
@@ -39,9 +38,7 @@ const Home: NextPage = () => {
 								height="160px"
 								width="100%"
 								noShadow>
-								<div className="flex items-center justify-center rounded-full bg-gray-200 h-20 w-20 text-3xl text-gray-500">
-									<IconPhUser/>
-								</div>
+								<Avatar src={profile.pictureUrl}/>
 								
 								<div className="flex flex-col pl-4">
 									<Typography variant={'subtitle'}>
@@ -70,7 +67,7 @@ const Home: NextPage = () => {
 				</div>
 			</main>
 		</>
-	);
-};
+	)
+}
 
 export default Home;

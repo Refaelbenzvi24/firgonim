@@ -4,11 +4,12 @@ import {api} from "../utils/api";
 import {z} from "zod";
 import {type SubmitHandler, useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
-import {Button, TextField, TextArea, Typography, theme} from "../components/UI";
-import {profileObject} from "../shared/validations/profile";
-import Link from "next/link";
+import {Button, TextField, TextArea, Typography, theme, FileInput} from "../components/UI";
+import {profileObjectWithImageInput} from "../shared/validations/profile";
+import Link from "next/link"
+import {toBase64} from "../shared/utils/files";
 
-const profileValidation = z.object(profileObject)
+const profileValidation = z.object(profileObjectWithImageInput)
 
 type ProfileValidationSchema = z.infer<typeof profileValidation>;
 
@@ -19,11 +20,27 @@ const Home: NextPage = () => {
 		resolver: zodResolver(profileValidation)
 	})
 	
-	const onSubmit: SubmitHandler<ProfileValidationSchema> = (data) => {
-		createProfile.mutate(data)
-		reset()
+	const buildImageObject = async (image: File) => {
+		const base64Image = await toBase64(image)
+		
+		if (base64Image === null) throw "couldn't convert image to base64"
+		
+		return {
+			base64Image,
+			fileName: image.name
+		}
 	}
 	
+	const onSubmit: SubmitHandler<ProfileValidationSchema> = async (data) => {
+		const {image, ...restData} = data
+		const imageObject = image[0] ? {image: await buildImageObject(image[0])} : {}
+		
+		await createProfile.mutateAsync({
+			...imageObject,
+			...restData
+		})
+		reset()
+	}
 	
 	return (
 		<>
@@ -49,6 +66,14 @@ const Home: NextPage = () => {
 						<form
 							className="flex flex-col w-[600px] pt-10"
 							onSubmit={handleSubmit(onSubmit)}>
+							<FileInput
+								label="תמונה"
+								error={!!errors.image}
+								helperText={errors.image?.message || "יש להשתמש באחד מהפורמטים הבאים: png, jpg, jpeg"}
+								accept="image/png, image/jpg, image/jpeg"
+								{...register('image')}
+							/>
+							
 							<TextField
 								label="אימייל"
 								error={!!errors.email}

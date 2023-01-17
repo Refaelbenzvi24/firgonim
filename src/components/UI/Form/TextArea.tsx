@@ -6,14 +6,13 @@ import {css} from "@emotion/react"
 import styled from "@emotion/styled"
 import autoAnimate from '@formkit/auto-animate'
 import clsx from "clsx"
-import {motion} from "framer-motion"
-import type {HTMLMotionProps} from "framer-motion"
 
 import theme from "../Utils/theme"
 import ConditionalLabel from "./ConditionalLabel"
 import HelperText from "./HelperText"
 import {transientOptions} from "../Utils/utils";
 import Section from "./Section";
+import {HTMLTagProps} from "../types";
 
 
 interface TextAreaProps {
@@ -21,7 +20,7 @@ interface TextAreaProps {
 	$centered?: boolean
 }
 
-export const TextAreaInput = styled(motion.textarea, transientOptions)(({$minHeight, $centered}: TextAreaProps) => [
+export const TextAreaInput = styled('textarea', transientOptions)(({$minHeight, $centered}: TextAreaProps) => [
 	css`
     width: 100%;
     padding: 7px 22px;
@@ -70,7 +69,7 @@ export const TextAreaInput = styled(motion.textarea, transientOptions)(({$minHei
 	`,
 ])
 
-interface TextAreaProps extends HTMLMotionProps<"textarea"> {
+interface TextAreaProps extends HTMLTagProps<HTMLTextAreaElement> {
 	placeholder?: string
 	centered?: boolean
 	persistentLabel?: boolean

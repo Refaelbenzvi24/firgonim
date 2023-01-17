@@ -1,13 +1,22 @@
 import {z} from "zod";
 
-import {createTRPCRouter, publicProcedure} from "../trpc";
-import {profileObject} from "../../../shared/validations/profile";
+import {createTRPCRouter, publicProcedure} from "../trpc"
+import {profileObjectWithImageString} from "../../../shared/validations/profile"
+import {uploadImage} from "../services/imagekit";
 
 export const profileRouter = createTRPCRouter({
 	create: publicProcedure
-		.input(z.object(profileObject))
-		.mutation(({input, ctx}) => {
-			return ctx.prisma.profile.create({data: input})
+		.input(z.object(profileObjectWithImageString))
+		.mutation(async ({input, ctx}) => {
+			const {image, ...restInput} = input
+			const response = image ? await uploadImage(image.base64Image, image.fileName) : undefined
+			
+			return ctx.prisma.profile.create({
+				data: {
+					...(response ? {pictureUrl: response.url} : {}),
+					...restInput
+				}
+			})
 		}),
 	getById: publicProcedure
 		.input(z.string())
@@ -35,5 +44,5 @@ export const profileRouter = createTRPCRouter({
 				}
 			}
 		});
-	}),
+	})
 });

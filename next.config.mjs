@@ -9,6 +9,15 @@ import Icons from 'unplugin-icons/webpack'
 
 /** @type {import("next").NextConfig} */
 const config = {
+    images: {
+        remotePatterns: [
+            {
+                protocol: 'https',
+                hostname: 'ik.imagekit.io',
+                pathname: '/irjqhb7l6/**'
+            }
+        ]
+    },
     reactStrictMode: true,
     swcMinify:       true,
     webpack:         (config) => {
