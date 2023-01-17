@@ -59,6 +59,7 @@ model Profile {
   email       String
   name        String
   title       String
+  pictureUrl  String?
   description String     @db.Text
   feedbacks   Feedback[]
   createdAt   DateTime   @default(now())

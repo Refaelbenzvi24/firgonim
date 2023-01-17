@@ -6,7 +6,7 @@ export const feedbackBaseObject = {
 	feedbackerName: z.string().min(1, {message: "יש להזין את שם נותן הפרגון"})
 }
 
-export const feedbackWithProfileObject = {
+export const feedbackObjectWithProfile = {
 	...feedbackBaseObject,
 	profile: z.string().cuid()
 }

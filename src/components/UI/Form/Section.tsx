@@ -1,10 +1,9 @@
-import {motion} from "framer-motion";
 import styled from "@emotion/styled";
 import {css} from "@emotion/react";
 
 
 
-const Section = styled(motion.section)(() => [
+const Section = styled.section(() => [
 	css`
     width: 100%;
 	`

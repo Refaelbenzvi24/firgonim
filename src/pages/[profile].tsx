@@ -1,9 +1,8 @@
 import {type NextPage} from "next";
 import Head from "next/head";
-import IconPhUser from '~icons/ph/user.jsx'
 
 import {api} from "../utils/api";
-import {Button, Card, TextField, theme, Typography} from "../components/UI";
+import {Avatar, Button, Card, TextField, theme, Typography} from "../components/UI";
 import {useRouter} from "next/router";
 import {type SubmitHandler, useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
@@ -18,12 +17,13 @@ type feedbackValidationSchema = z.infer<typeof feedbackValidation>;
 const Home: NextPage = () => {
 	const router = useRouter()
 	const profileId = router.query.profile as string
-	const profile = api.profile.getById.useQuery(profileId);
+	const profile = api.profile.getById.useQuery(profileId)
 	const createFeedback = api.feedback.create.useMutation()
-	const utils = api.useContext();
+	const utils = api.useContext()
 	
-	const {handleSubmit, reset, formState: {errors}, register} = useForm<feedbackValidationSchema>({
-		resolver: zodResolver(feedbackValidation)
+	const {handleSubmit, formState: {errors}, reset, register} = useForm<feedbackValidationSchema>({
+		resolver: zodResolver(feedbackValidation),
+		shouldUnregister: false
 	})
 	
 	const onSubmit: SubmitHandler<feedbackValidationSchema> = (data) => {
@@ -32,8 +32,8 @@ const Home: NextPage = () => {
 			profile: profileId
 		}, {
 			onSuccess: () => {
-				reset();
 				void utils.profile.getById.invalidate()
+				reset()
 			}
 		})
 	}
@@ -65,9 +65,9 @@ const Home: NextPage = () => {
 								width="w-full"
 								noShadow>
 								<div className="flex flex-col items-center">
-									<div className="flex items-center justify-center mb-4 rounded-full bg-gray-200 h-20 w-20 text-3xl text-gray-500">
-										<IconPhUser/>
-									</div>
+									<Avatar
+										className="mb-4"
+										src={profile.data?.pictureUrl}/>
 									
 									<Typography variant={'h3'}>
 										{profile.data?.name}
@@ -93,7 +93,8 @@ const Home: NextPage = () => {
 										className="mt-4"
 										centered
 										weight={400}
-										variant={'small'}>
+										size={0.95}
+										variant={'body'}>
 										{profile.data?.description}
 									</Typography>
 								</div>
@@ -145,6 +146,7 @@ const Home: NextPage = () => {
 										error={!!errors.subject}
 										helperText={errors.subject?.message}
 										{...register('subject')}/>
+									
 									
 									<TextField
 										noShadow

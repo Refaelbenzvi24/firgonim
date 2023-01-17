@@ -1,6 +1,8 @@
+export {default as Avatar} from "./Avatar/Avatar"
 export {default as Button} from "./Button/Button"
 export {default as Card} from "./Card/Card"
 export {default as TextArea} from "./Form/TextArea"
 export {default as TextField} from "./Form/TextField"
+export {default as FileInput} from "./Form/FileInput"
 export {default as Typography} from "./Typhography/Typography"
 export {default as theme} from "./Utils/theme"
