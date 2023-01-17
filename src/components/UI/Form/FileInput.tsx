@@ -1,4 +1,4 @@
-import {forwardRef, useEffect, useRef, useState} from "react"
+import {forwardRef, InputHTMLAttributes, useEffect, useRef, useState} from "react"
 import type {FormEvent} from "react"
 
 import {css as classCss} from "@emotion/css"
@@ -62,7 +62,7 @@ export const FileInputInput = styled('input', transientOptions)((
 ])
 
 
-interface FileInputProps extends HTMLTagProps<HTMLInputElement> {
+interface FileInputProps extends HTMLTagProps<HTMLInputElement, InputHTMLAttributes<HTMLInputElement>> {
 	centered?: boolean
 	noShadow?: boolean
 	placeholder?: string
