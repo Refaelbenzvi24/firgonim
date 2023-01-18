@@ -9,8 +9,7 @@ import theme from '../Utils/theme'
 
 type TypographyParagraphTypes = 'subtitle' | 'body' | 'bold' | 'small' | 'preTitle' | 'button' | 'link'
 
-type TypographyVariantOptions =
-	'h1' | 'h2' | 'h3' | TypographyParagraphTypes
+type TypographyVariantOptions = 'h1' | 'h2' | 'h3' | TypographyParagraphTypes
 
 
 interface SettingsItem {
