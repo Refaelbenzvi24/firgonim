@@ -18,9 +18,10 @@ import {HTMLTagProps} from "../types";
 interface TextAreaProps {
 	$minHeight?: `${number}px` | `${number}rem`,
 	$centered?: boolean
+	$noShadow?: boolean
 }
 
-export const TextAreaInput = styled('textarea', transientOptions)(({$minHeight, $centered}: TextAreaProps) => [
+export const TextAreaInput = styled('textarea', transientOptions)(({$minHeight, $centered, $noShadow}: TextAreaProps) => [
 	css`
     width: 100%;
     padding: 7px 22px;
@@ -41,13 +42,13 @@ export const TextAreaInput = styled('textarea', transientOptions)(({$minHeight, 
     background-color: ${theme.colorScheme.accent};
     color: ${theme.colorScheme.header2};
     resize: none;
-    box-shadow: ${theme.shadows["2"]};
+    box-shadow: ${$noShadow ? '' : theme.shadows["2"]};
     font-weight: ${500};
     font-size: 1rem;
     line-height: 140%;
 
     &:focus {
-      box-shadow: ${theme.shadows["3"]};
+      box-shadow: ${$noShadow ? theme.shadows["0"] : theme.shadows["3"]};
       outline: none;
       --tw-ring-color: transparent;
     }
@@ -73,6 +74,7 @@ interface TextAreaProps extends HTMLTagProps<HTMLTextAreaElement> {
 	placeholder?: string
 	centered?: boolean
 	persistentLabel?: boolean
+	noShadow?: boolean
 	minHeight?: `${number}px` | `${number}rem`
 	value?: string | readonly string[] | number | undefined
 	error?: boolean
@@ -89,6 +91,7 @@ const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>((props, ref) => 
 		persistentLabel,
 		onInput,
 		onChange,
+		noShadow,
 		centered,
 		value,
 		error,
@@ -129,6 +132,7 @@ const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>((props, ref) => 
 				{...restProps}
 				ref={textareaRef}
 				$minHeight={minHeight}
+				$noShadow={noShadow}
 				onInput={inputHandler}
 				className={`
 					${classCss`
