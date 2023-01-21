@@ -2,7 +2,7 @@ import {type NextPage} from "next";
 import Head from "next/head";
 
 import {api} from "../utils/api";
-import {Avatar, Button, Card, TextField, theme, Typography} from "../components/UI";
+import {Avatar, Button, Card, TextField,TextArea, theme, Typography} from "../components/UI";
 import {useRouter} from "next/router";
 import {type SubmitHandler, useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
@@ -148,7 +148,7 @@ const Home: NextPage = () => {
 										{...register('subject')}/>
 									
 									
-									<TextField
+									<TextArea
 										noShadow
 										label="תיאור"
 										error={!!errors.description}
