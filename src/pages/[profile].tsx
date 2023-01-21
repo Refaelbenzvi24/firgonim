@@ -149,7 +149,6 @@ const Home: NextPage = () => {
 									
 									
 									<TextArea
-										noShadow
 										label="תיאור"
 										error={!!errors.description}
 										helperText={errors.description?.message}
