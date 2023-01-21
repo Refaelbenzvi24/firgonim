@@ -146,14 +146,15 @@ const Home: NextPage = () => {
 										error={!!errors.subject}
 										helperText={errors.subject?.message}
 										{...register('subject')}/>
-									
-									
-									<TextField
+
+									<TextArea
 										noShadow
 										label="תיאור"
 										error={!!errors.description}
+										minHeight="100px"
 										helperText={errors.description?.message}
 										{...register('description')}/>
+
 									
 									<TextField
 										noShadow
