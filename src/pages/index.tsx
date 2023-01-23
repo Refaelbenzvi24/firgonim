@@ -10,9 +10,8 @@ const Home: NextPage = () => {
 	const router = useRouter()
 	const {data: profiles} = api.profile.getAll.useQuery();
 	
-	const goToProfile = (profile: inferProcedureOutput<AppRouter["profile"]["getAll"]>[number]) => {
+	const goToProfile = (profile: inferProcedureOutput<AppRouter["profile"]["getAll"]>[number]) =>
 		void router.push(`/${profile.id}`)
-	}
 	
 	return (
 		<>
