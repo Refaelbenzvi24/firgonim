@@ -14,6 +14,12 @@ const feedbackValidation = z.object(feedbackBaseObject)
 
 type feedbackValidationSchema = z.infer<typeof feedbackValidation>;
 
+export const getServerSideProps = () => {
+	return {
+		props: {}
+	}
+}
+
 const Home: NextPage = () => {
 	const router = useRouter()
 	const profileId = router.query.profile as string
