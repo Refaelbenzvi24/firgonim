@@ -27,7 +27,7 @@ const Home: NextPage = () => {
 					</Typography>
 				</div>
 				
-				<div className="flex h-full pt-32">
+				<div className="flex h-full pt-32 pb-10">
 					<div dir="ltr" className="flex flex-row flex-wrap gap-4 px-10 mx-auto w-[1140px]">
 						{profiles && profiles.map((profile, index) => (
 							<Card
