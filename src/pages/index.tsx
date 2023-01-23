@@ -6,6 +6,12 @@ import {type inferProcedureOutput} from "@trpc/server";
 import {type AppRouter} from "../server/api/root";
 import {useRouter} from "next/router";
 
+export const getServerSideProps = () => {
+	return {
+		props: {}
+	}
+}
+
 const Home: NextPage = () => {
 	const router = useRouter()
 	const {data: profiles} = api.profile.getAll.useQuery();
