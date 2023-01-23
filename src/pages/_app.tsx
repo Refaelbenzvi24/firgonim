@@ -7,10 +7,8 @@ import {api} from "../utils/api";
 import "../styles/globals.css";
 import "../styles/main.css"
 
-const MyApp: AppType<{ session: Session | null }> = ({
-	                                                     Component,
-	                                                     pageProps: {session, ...pageProps},
-                                                     }) => {
+const MyApp: AppType<{ session: Session | null }> = (props) => {
+	const {Component, pageProps: {session, ...pageProps}} = props
 	return (
 		<SessionProvider session={session}>
 			<Component {...pageProps} />

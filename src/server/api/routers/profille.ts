@@ -36,6 +36,11 @@ export const profileRouter = createTRPCRouter({
 		}),
 	getAll: publicProcedure.query(({ctx}) => {
 		return ctx.prisma.profile.findMany({
+			orderBy: {
+				feedbacks: {
+					_count: "desc"
+				}
+			},
 			include: {
 				_count: {
 					select: {
