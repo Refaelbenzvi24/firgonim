@@ -45,7 +45,7 @@ const Home: NextPage = () => {
 	return (
 		<>
 			<Head>
-				<title>{`פרופיל - ${profile.data!.name}`}</title>
+				<title>{`פרופיל - ${profile.data?.name || ""}`}</title>
 				<meta name="description" content=".אתר הפרגונים של הקהילה Dev Online Helpers"/>
 				<link rel="icon" href="/public/favicon.ico"/>
 			</Head>
