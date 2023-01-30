@@ -1,4 +1,6 @@
 import Icons from 'unplugin-icons/webpack'
+import IconsResolver from 'unplugin-icons/resolver'
+import AutoImport from 'unplugin-auto-import/webpack'
 
 // @ts-check
 /**
@@ -9,7 +11,7 @@ import Icons from 'unplugin-icons/webpack'
 
 /** @type {import("next").NextConfig} */
 const config = {
-    images: {
+    images:          {
         remotePatterns: [
             {
                 protocol: 'https',
@@ -26,6 +28,22 @@ const config = {
                 compiler: 'jsx',
                 jsx:      'react'
             }),
+        )
+
+        config.plugins.push(
+            AutoImport({
+                resolvers: [
+                    IconsResolver({
+                        componentPrefix: 'Icon',
+                        extension:       'jsx'
+                    })
+                ],
+                include:   [
+                    /\.[tj]sx?$/, // .ts, .tsx, .js, .jsx
+                    /\.md$/, // .md
+                ],
+                dts:       'src/auto-imports.d.ts',
+            })
         )
 
         return config
