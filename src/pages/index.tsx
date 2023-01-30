@@ -29,7 +29,7 @@ const Home: NextPage = () => {
 			<main dir="rtl" className="flex min-h-screen flex-col bg-[#f5f6fa]">
 				<div className="flex items-center justify-between fixed h-20 w-full bg-gray-200 px-4">
 					<Typography variant={'h2'} color={theme.colors.dark_300}>
-						פרגונים
+						Dev Experts
 					</Typography>
 				</div>
 				
