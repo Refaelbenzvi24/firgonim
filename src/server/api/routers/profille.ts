@@ -34,20 +34,35 @@ export const profileRouter = createTRPCRouter({
 				}
 			})
 		}),
-	getAll: publicProcedure.query(({ctx}) => {
-		return ctx.prisma.profile.findMany({
-			orderBy: {
-				feedbacks: {
-					_count: "desc"
-				}
-			},
-			include: {
-				_count: {
-					select: {
-						feedbacks: true
+	getAll: publicProcedure
+		.input(z.object({
+			limit: z.number().min(1).max(100).optional(),
+			cursor: z.string().cuid().optional()
+		}))
+		.query(async ({ctx, input}) => {
+			const {cursor, limit = 50} = input || {limit: 50}
+			
+			const items = await ctx.prisma.profile.findMany({
+				take: limit + 1,
+				cursor: cursor ? {id: cursor} : undefined,
+				orderBy: {
+					feedbacks: {
+						_count: "desc"
 					}
-				}
+				},
+				include: {
+					_count: {
+						select: {
+							feedbacks: true
+						}
+					}
+				},
+			})
+			const nextCursor = items.pop()!.id
+			
+			return {
+				items,
+				nextCursor
 			}
-		});
-	})
-});
+		})
+})
