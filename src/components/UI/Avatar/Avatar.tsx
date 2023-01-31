@@ -1,6 +1,7 @@
 import Image from "next/image";
 import clsx from "clsx";
 import {HTMLTagProps} from "../types";
+import IconPhUser from '~icons/ph/user.jsx'
 
 interface AvatarProps extends HTMLTagProps<HTMLDivElement> {
 	src?: string | null

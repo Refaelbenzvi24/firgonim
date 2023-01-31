@@ -1,4 +1,4 @@
-import {type NextPage} from "next";
+import {GetServerSideProps, type NextPage} from "next";
 import Head from "next/head";
 
 import {api} from "../utils/api";
@@ -9,14 +9,42 @@ import {zodResolver} from "@hookform/resolvers/zod";
 import {z} from "zod";
 import {feedbackBaseObject} from "../shared/validations/feedback";
 import Link from "next/link";
+import {createProxySSGHelpers} from "@trpc/react-query/ssg";
+import {appRouter} from "../server/api/root";
+import superjson from "superjson";
+import {getSession} from "next-auth/react";
+import {prisma} from "../server/db"
 
 const feedbackValidation = z.object(feedbackBaseObject)
 
 type feedbackValidationSchema = z.infer<typeof feedbackValidation>;
 
-export const getServerSideProps = () => ({
-	props: {}
-})
+// export const getServerSideProps = () => new Promise((resolve) => {
+// 	setTimeout(()=> resolve(({
+// 		props: {}
+// 	})), 4000)
+// })
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+	const profileId = context.query?.profile as string
+	
+	const ssg = createProxySSGHelpers({
+		router: appRouter,
+		ctx: {
+			session: await getSession(context),
+			prisma
+		},
+		transformer: superjson,
+	});
+	
+	await ssg.profile.getById.prefetch(profileId)
+	
+	return {
+		props: {
+			trpcState: ssg.dehydrate()
+		},
+	};
+}
 
 const Home: NextPage = () => {
 	const router = useRouter()
@@ -45,7 +73,7 @@ const Home: NextPage = () => {
 	return (
 		<>
 			<Head>
-				<title>{`פרופיל - ${profile.data!.name}`}</title>
+				<title>{`פרופיל - ${profile.data?.name || ""}`}</title>
 				<meta name="description" content=".אתר הפרגונים של הקהילה Dev Online Helpers"/>
 				<link rel="icon" href="/public/favicon.ico"/>
 			</Head>
@@ -58,7 +86,7 @@ const Home: NextPage = () => {
 					</Link>
 				</div>
 				
-				<div className="flex h-full pt-32">
+				<div dir="rtl" className="flex h-full pt-32">
 					<div className={`flex lg:flex-row flex-col md:px-10 mx-auto lg:w-[1024px] xl:w-[1280px] md:w-[80%] sm:w-[80%] w-[100%]`}>
 						
 						<div className="px-4">

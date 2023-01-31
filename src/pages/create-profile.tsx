@@ -97,7 +97,7 @@ const Home: NextPage = () => {
 								error={!!errors.description}
 								minHeight="100px"
 								helperText={errors.description?.message}
-								{...register('description')}/>s
+								{...register('description')}/>
 							
 							<Button
 								noShadow

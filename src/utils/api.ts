@@ -29,10 +29,10 @@ export const api = createTRPCNext<AppRouter>({
         transformer: superjson, // optional - adds superjson serialization
         links: [
           httpBatchLink({
-            url: '/api/trpc',
+            url: '/api/trpc'
           }),
         ],
-      };
+      }
     }
   
     return {
@@ -70,22 +70,22 @@ export const api = createTRPCNext<AppRouter>({
           },
         }),
       ],
-    };
+    }
   },
   /**
    * Whether tRPC should await queries when server rendering pages
    * @see https://trpc.io/docs/nextjs#ssr-boolean-default-false
    */
-  ssr: true,
-});
+  ssr: false,
+})
 
 /**
  * Inference helper for inputs
  * @example type HelloInput = RouterInputs['example']['hello']
  **/
-export type RouterInputs = inferRouterInputs<AppRouter>;
+export type RouterInputs = inferRouterInputs<AppRouter>
 /**
  * Inference helper for outputs
  * @example type HelloOutput = RouterOutputs['example']['hello']
  **/
-export type RouterOutputs = inferRouterOutputs<AppRouter>;
+export type RouterOutputs = inferRouterOutputs<AppRouter>

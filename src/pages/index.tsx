@@ -1,19 +1,36 @@
-import {type NextPage} from "next"
+import {GetServerSideProps, type NextPage} from "next"
 import Head from "next/head"
 import {api} from "../utils/api"
 import {Avatar, Card, theme, Typography} from "../components/UI"
-import {type inferProcedureOutput} from "@trpc/server"
-import {type AppRouter} from "../server/api/root"
-import {useRouter} from "next/router"
+import {appRouter} from "../server/api/root"
 import {ImpulseSpinner} from "../components/UI/Loaders/Impulse";
 import {motion} from "framer-motion";
+import {createProxySSGHelpers} from "@trpc/react-query/ssg";
+import {getSession} from "next-auth/react";
+import {prisma} from "../server/db";
+import superjson from "superjson";
+import Link from "next/link";
 
-export const getServerSideProps = () => ({
-	props: {}
-})
+export const getServerSideProps: GetServerSideProps = async (context) => {
+	const ssg = createProxySSGHelpers({
+		router: appRouter,
+		ctx: {
+			session: await getSession(context),
+			prisma
+		},
+		transformer: superjson,
+	});
+	
+	await ssg.profile.getAll.prefetchInfinite({limit: 10})
+	
+	return {
+		props: {
+			trpcState: ssg.dehydrate()
+		},
+	}
+}
 
 const Home: NextPage = () => {
-	const router = useRouter()
 	const {
 		data: profiles,
 		fetchNextPage,
@@ -26,8 +43,6 @@ const Home: NextPage = () => {
 		}
 	})
 	
-	const goToProfile = (profile: inferProcedureOutput<AppRouter["profile"]["getAll"]>["items"][number]) =>
-		void router.push(`/${profile.id}`)
 	
 	return (
 		<>
@@ -47,35 +62,36 @@ const Home: NextPage = () => {
 					<div dir="ltr" className="flex flex-row flex-wrap gap-4 px-10 mx-auto w-[1140px]">
 						{profiles && profiles.pages.map(page => page.items.map((profile, index) => (
 							<Card
-								onClick={() => goToProfile(profile)}
 								key={index}
-								className="flex flex-row p-4 items-center cursor-pointer"
 								height="160px"
 								width="100%"
 								noShadow>
-								<Avatar src={profile.pictureUrl}/>
-								
-								<div className="flex flex-col pl-4">
-									<Typography variant={'subtitle'}>
-										{profile.name}
-									</Typography>
+								<Link className="flex flex-row h-full w-full p-4 items-center cursor-pointer"
+									href={`/${profile.id}`}>
+									<Avatar src={profile.pictureUrl}/>
 									
-									<Typography
-										className="mt-1"
-										weight={400}
-										variant={'body'}
-										color={theme.colors.gray_600}>
-										{profile.title}
-									</Typography>
-									
-									<Typography
-										className="mt-1.5"
-										weight={400}
-										variant={'body'}
-										color={theme.colors.blue_500}>
-										{profile._count.feedbacks} Review
-									</Typography>
-								</div>
+									<div className="flex flex-col pl-4">
+										<Typography variant={'subtitle'}>
+											{profile.name}
+										</Typography>
+										
+										<Typography
+											className="mt-1"
+											weight={400}
+											variant={'body'}
+											color={theme.colors.gray_600}>
+											{profile.title}
+										</Typography>
+										
+										<Typography
+											className="mt-1.5"
+											weight={400}
+											variant={'body'}
+											color={theme.colors.blue_500}>
+											{profile._count.feedbacks} Review
+										</Typography>
+									</div>
+								</Link>
 							</Card>
 						)))}
 						
