@@ -19,8 +19,9 @@ import {HTMLTagProps} from "../types";
 export const TextFieldInput = styled('input', transientOptions)((
 	{
 		$centered,
-		$noShadow
-	}: { $centered?: boolean, $noShadow?: boolean }) => [
+		$noShadow,
+		$bgColor
+	}: { $centered?: boolean, $noShadow?: boolean, $bgColor?: string }) => [
 	css`
     width: 100%;
     padding: 7px 22px;
@@ -32,9 +33,9 @@ export const TextFieldInput = styled('input', transientOptions)((
 	`,
 	
 	css`
-    background-color: ${theme.colorScheme.accent};
+    background-color: ${$bgColor || theme.colorScheme.accent};
     color: ${theme.colorScheme.header2};
-    box-shadow: ${$noShadow ? '' : theme.shadows["2"]};
+    box-shadow: ${$noShadow ? '' : theme.shadows["0"]};
     font-weight: ${500};
     font-size: 1rem;
     line-height: 140%;
@@ -65,11 +66,13 @@ export const TextFieldInput = styled('input', transientOptions)((
 
 interface TextFieldProps extends HTMLTagProps<HTMLInputElement> {
 	centered?: boolean
+	bgColor?: string
 	noShadow?: boolean
 	placeholder?: string
 	persistentLabel?: boolean
 	value?: string | readonly string[] | number | undefined
 	error?: boolean
+	removeMargins?: boolean
 	helperText?: string
 	label?: string
 }
@@ -84,7 +87,9 @@ const TextField = forwardRef<HTMLInputElement, TextFieldProps>((props, ref) => {
 		placeholder,
 		centered,
 		onInput,
+		bgColor,
 		error,
+		removeMargins,
 		helperText,
 		...restProps
 	} = props
@@ -111,13 +116,14 @@ const TextField = forwardRef<HTMLInputElement, TextFieldProps>((props, ref) => {
 				ref={ref}
 				className={`
 					${classCss`
-						${(localValue && label) || (label && persistentLabel) ? classCss`margin-top: 0;` : classCss`margin-top: 24px;`}
-						${helperText ? classCss`margin-bottom: 0;` : classCss`margin-bottom: 24px;`}
+						${(localValue && label) || (label && persistentLabel) || removeMargins ? classCss`margin-top: 0;` : classCss`margin-top: 24px;`}
+						${helperText || removeMargins ? classCss`margin-bottom: 0;` : classCss`margin-bottom: 24px;`}
 					`}
 					${clsx(className)}`
 				}
 				onInput={inputHandler}
 				placeholder={placeholder || (!persistentLabel ? label : '')}
+				$bgColor={bgColor}
 				$noShadow={noShadow}
 				$centered={centered}/>
 			
@@ -134,6 +140,7 @@ TextField.defaultProps = {
 	persistentLabel: false,
 	value: undefined,
 	error: false,
+	removeMargins: false,
 	helperText: undefined,
 	label: undefined,
 }

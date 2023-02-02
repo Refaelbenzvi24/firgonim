@@ -37,14 +37,25 @@ export const profileRouter = createTRPCRouter({
 	getAll: publicProcedure
 		.input(z.object({
 			limit: z.number().min(1).max(100).optional(),
-			cursor: z.string().cuid().optional()
+			cursor: z.string().cuid().optional(),
+			search: z.string().optional()
 		}))
 		.query(async ({ctx, input}) => {
-			const {cursor, limit = 50} = input || {limit: 50}
+			const {cursor, search, limit = 50} = input || {limit: 50}
+			
+			const nameQueryObject = {
+				where: {
+					name: {
+						contains: search,
+						mode: 'insensitive'
+					}
+				},
+			} as const
 			
 			const items = await ctx.prisma.profile.findMany({
 				take: limit + 1,
 				cursor: cursor ? {id: cursor} : undefined,
+				...(search ? nameQueryObject : {}),
 				orderBy: {
 					feedbacks: {
 						_count: "desc"
@@ -58,7 +69,10 @@ export const profileRouter = createTRPCRouter({
 					}
 				},
 			})
-			const nextCursor = items.pop()!.id
+			
+			if (items.length !== limit + 1) return {items, nextCursor: undefined}
+			
+			const nextCursor = items.pop()?.id
 			
 			return {
 				items,
