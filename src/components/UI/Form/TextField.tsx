@@ -23,6 +23,7 @@ export const TextFieldInput = styled('input', transientOptions)((
 		$bgColor
 	}: { $centered?: boolean, $noShadow?: boolean, $bgColor?: string }) => [
 	css`
+    border-radius: 5px;
     width: 100%;
     padding: 7px 22px;
     resize: none;

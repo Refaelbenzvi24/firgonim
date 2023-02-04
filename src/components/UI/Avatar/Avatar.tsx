@@ -11,6 +11,9 @@ const Avatar = (props: AvatarProps) => {
 	const {src, className, ...restProps} = props
 	
 	return src ? (
+		<div
+			{...restProps}
+			className={`flex w-fit h-fit ${clsx(className)}`}>
 			<Image
 				className="rounded-full h-20 w-20 object-cover"
 				src={src}
@@ -18,6 +21,7 @@ const Avatar = (props: AvatarProps) => {
 				width={80}
 				quality={100}
 				alt={''}/>
+		</div>
 	) : (
 		<div
 			{...restProps}

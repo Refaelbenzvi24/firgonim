@@ -141,7 +141,7 @@ const Home: NextPage = () => {
 									height="fit-content"
 									key={feedback.id}
 									noShadow>
-									<div className="flex flex-col space-y-2 w-[50%]">
+									<div className="flex flex-col space-y-2 xl:w-[60%] lg:w-[%60] md:w-[70%] sm:w-[80%] overflow-x-clip">
 										<Typography variant={'body'} color={theme.colors.blue_500}>
 											{feedback.subject}
 										</Typography>
