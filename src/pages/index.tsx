@@ -10,7 +10,7 @@ import {getSession} from "next-auth/react";
 import {prisma} from "../server/db";
 import superjson from "superjson";
 import Link from "next/link";
-import {FormEvent, useCallback} from "react";
+import {FormEvent, useCallback, useEffect, useRef} from "react";
 import {useRouter} from "next/router";
 import {debounce} from "../utils/helpers";
 import useWindowDimensions from "../hooks/useWindowDimensions";
@@ -40,6 +40,7 @@ const Home: NextPage = () => {
 	const router = useRouter();
 	const searchQuery = router.query?.search as string || ''
 	const {width} = useWindowDimensions()
+	const searchInputElement = useRef<HTMLInputElement>(null)
 	
 	const {
 		data: profiles,
@@ -56,12 +57,18 @@ const Home: NextPage = () => {
 	const handleSearch = ({target}: FormEvent<HTMLInputElement>) => {
 		const searchText = (target as HTMLInputElement).value
 		
-		if (searchText.length < 2 && searchText.length !== 0) return;
+		if (searchText.length < 2 && searchText.length !== 0)
+			return void router.push({query: {}}, undefined, {shallow: true})
 		
 		void router.push({query: searchText ? {search: searchText} : {}}, undefined, {shallow: true})
 	}
 	
 	const debouncedSearchHandler = useCallback(debounce(handleSearch, 400), [])
+	
+	useEffect(() => {
+		if (searchInputElement.current) searchInputElement.current.value = searchQuery
+	}, [searchInputElement.current]);
+	
 	
 	return (
 		<>
@@ -73,27 +80,28 @@ const Home: NextPage = () => {
 			
 			<main className="flex min-h-screen flex-col bg-[#f5f6fa]">
 				<AppBar className="px-4" bgColor={theme.colors.gray_100}>
-						<div className="flex flex-1">
-							<Typography
-								className="whitespace-nowrap"
-								variant={'h2'}
-								color={theme.colors.dark_300}>
-								Dev Experts
-							</Typography>
+					<div className="flex flex-1">
+						<Typography
+							className="whitespace-nowrap"
+							variant={'h2'}
+							color={theme.colors.dark_300}>
+							Dev Experts
+						</Typography>
+					</div>
+					
+					{width && width > 900 && (
+						<div className="flex flex-[2]">
+							<TextField
+								ref={searchInputElement}
+								className="max-w-md"
+								dir="rtl"
+								bgColor={theme.colorScheme.light}
+								removeMargins
+								noShadow
+								onChange={debouncedSearchHandler}
+								placeholder="חיפוש"/>
 						</div>
-						
-						{width && width > 900 && (
-							<div className="flex flex-[2]">
-								<TextField
-									className="max-w-md"
-									dir="rtl"
-									bgColor={theme.colorScheme.light}
-									removeMargins
-									noShadow
-									onChange={debouncedSearchHandler}
-									placeholder="חיפוש"/>
-							</div>
-						)}
+					)}
 				</AppBar>
 				
 				<div className="flex h-full pt-32 max-[900px]:pt-24 pb-10">
@@ -101,6 +109,7 @@ const Home: NextPage = () => {
 						{width && width <= 900 && (
 							<div className="flex w-full">
 								<TextField
+									ref={searchInputElement}
 									dir="rtl"
 									removeMargins
 									bgColor={theme.colorScheme.light}
