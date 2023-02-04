@@ -58,13 +58,13 @@ const Home: NextPage = () => {
 					</Link>
 				</div>
 				
-				<div className="flex h-full pt-32">
-					<div className="flex flex-col px-10 mx-auto w-[1140px] h-full items-center justify-center">
+				<div className="flex h-full md:pt-32 pt-20">
+					<div className="flex flex-col md:px-10 sm:px-6 px-4 mx-auto w-[1140px] h-full items-center justify-center">
 						<Typography variant={'h2'}>
 							יצירת פרופיל
 						</Typography>
 						<form
-							className="flex flex-col w-[600px] pt-10"
+							className="flex flex-col w-full md:pt-10 pt-1 md:w-[600px] w-full"
 							onSubmit={handleSubmit(onSubmit)}>
 							<FileInput
 								label="תמונה"

@@ -14,6 +14,7 @@ import {FormEvent, useCallback} from "react";
 import {useRouter} from "next/router";
 import {debounce} from "../utils/helpers";
 import useWindowDimensions from "../hooks/useWindowDimensions";
+import AppBar from "../components/UI/AppBar/AppBar";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
 	const search = context.query?.search as string || ''
@@ -54,6 +55,9 @@ const Home: NextPage = () => {
 	
 	const handleSearch = ({target}: FormEvent<HTMLInputElement>) => {
 		const searchText = (target as HTMLInputElement).value
+		
+		if (searchText.length < 2 && searchText.length !== 0) return;
+		
 		void router.push({query: searchText ? {search: searchText} : {}}, undefined, {shallow: true})
 	}
 	
@@ -68,28 +72,29 @@ const Home: NextPage = () => {
 			</Head>
 			
 			<main className="flex min-h-screen flex-col bg-[#f5f6fa]">
-				<div className="flex items-center fixed h-20 w-full bg-gray-200 px-4 z-[1100]">
-					<div className="flex flex-1">
-						<Typography
-							className="whitespace-nowrap"
-							variant={'h2'}
-							color={theme.colors.dark_300}>
-							Dev Experts
-						</Typography>
-					</div>
-					
-					{width && width > 900 && (
-						<div className="flex flex-[2]">
-							<TextField
-								className="max-w-md"
-								dir="rtl"
-								removeMargins
-								noShadow
-								onChange={debouncedSearchHandler}
-								placeholder="חיפוש"/>
+				<AppBar className="px-4" bgColor={theme.colors.gray_100}>
+						<div className="flex flex-1">
+							<Typography
+								className="whitespace-nowrap"
+								variant={'h2'}
+								color={theme.colors.dark_300}>
+								Dev Experts
+							</Typography>
 						</div>
-					)}
-				</div>
+						
+						{width && width > 900 && (
+							<div className="flex flex-[2]">
+								<TextField
+									className="max-w-md"
+									dir="rtl"
+									bgColor={theme.colorScheme.light}
+									removeMargins
+									noShadow
+									onChange={debouncedSearchHandler}
+									placeholder="חיפוש"/>
+							</div>
+						)}
+				</AppBar>
 				
 				<div className="flex h-full pt-32 max-[900px]:pt-24 pb-10">
 					<div dir="ltr" className="flex flex-row flex-wrap gap-4 px-10 mx-auto w-[1140px]">
@@ -98,6 +103,7 @@ const Home: NextPage = () => {
 								<TextField
 									dir="rtl"
 									removeMargins
+									bgColor={theme.colorScheme.light}
 									onChange={debouncedSearchHandler}
 									placeholder="חיפוש"/>
 							</div>

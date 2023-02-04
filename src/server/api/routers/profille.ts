@@ -38,7 +38,7 @@ export const profileRouter = createTRPCRouter({
 		.input(z.object({
 			limit: z.number().min(1).max(100).optional(),
 			cursor: z.string().cuid().optional(),
-			search: z.string().optional()
+			search: z.string().min(2, {message: 'search must be longer than 2.'}).or(z.string().max(0)).optional()
 		}))
 		.query(async ({ctx, input}) => {
 			const {cursor, search, limit = 50} = input || {limit: 50}
