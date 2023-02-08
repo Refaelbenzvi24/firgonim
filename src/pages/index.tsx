@@ -27,7 +27,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 		transformer: superjson,
 	});
 	
-	await ssg.profile.getAll.prefetchInfinite({limit: 10, search})
+	await ssg.profile.getAll.prefetchInfinite({limit: 50, search})
 	
 	return {
 		props: {
@@ -46,7 +46,7 @@ const Home: NextPage = () => {
 		data: profiles,
 		fetchNextPage,
 		hasNextPage
-	} = api.profile.getAll.useInfiniteQuery({limit: 10, search: searchQuery}, {
+	} = api.profile.getAll.useInfiniteQuery({limit: 50, search: searchQuery}, {
 		getNextPageParam: (lastPage, allPages) => {
 			if (allPages[allPages.length - 1]?.items.length === 0) return undefined
 			
